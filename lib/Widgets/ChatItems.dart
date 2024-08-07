@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gemini_ai/Utils/ColourConstant.dart';
 import 'package:gemini_ai/Utils/Utils.dart';
 import 'package:gemini_ai/Utils/font_path.dart';
+import 'package:stream_typewriter_text/stream_typewriter_text.dart';
 import 'package:typewritertext/typewritertext.dart';
 
 class ChatItems extends StatelessWidget {
@@ -53,15 +54,30 @@ class ChatItems extends StatelessWidget {
                         : isFromUser
                             ? Text(text,style: const TextStyle(
                       fontFamily: mediumFont,color: appWhite
-                    ),)
-                            : TypeWriter.text(text,
-                                duration: const Duration(milliseconds: 10),
-                                style: TextStyle(
-                                    fontFamily: mediumFont,
-                                    color: isFromUser
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontSize: 15))),
+                    ))
+                            :
+                    StreamTypewriterAnimatedText(
+                      text: text,
+                      style: const TextStyle(
+                        fontFamily: mediumFont,
+                        fontSize: 15,
+                        color: Colors.black,
+                      ),
+                      //isHapticFeedbackEnabled: true,
+                      speed: const Duration(milliseconds: 30),
+                      pause: const Duration(milliseconds: 100),
+                    )
+
+                    // TypeWriter.text(text,
+                    //             duration: const Duration(milliseconds: 10),
+                    //             style: TextStyle(
+                    //                 fontFamily: mediumFont,
+                    //                 color: isFromUser
+                    //                     ? Colors.white
+                    //                     : Colors.black,
+                    //                 fontSize: 15))
+
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0,top: 10,bottom: 10),

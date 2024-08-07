@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    chatController.scrollAnimation();
     chatController.streamSocket.getResponse;
     chatController.model = GenerativeModel(
       model: 'gemini-1.5-flash',
@@ -55,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Gemini AI'),
       ),
       body: Obx(() {
+        chatController.scrollAnimation();
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -127,100 +129,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Future<void> _sendChatMessage(String message) async {
-  //   setState(() {
-  //     _loading = true;
-  //   });
-  //
-  //   try {
-  //     list.add(DataModel('', 'text', message, isMe: true));
-  //     streamSocket.addResponse(list);
-  //
-  //     var response = await _chat.sendMessage(
-  //       Content.text(message),
-  //     );
-  //
-  //     var text = response.text;
-  //
-  //     if (text == null) {
-  //       _showError('No response from API.');
-  //       return;
-  //     } else {
-  //       list.add(DataModel('', 'text', text, isMe: false));
-  //       streamSocket.addResponse(list);
-  //       setState(() {
-  //         _loading = false;
-  //         _scrollDown();
-  //       });
-  //     }
-  //   } catch (e) {
-  //     _showError(e.toString());
-  //     setState(() {
-  //       _loading = false;
-  //     });
-  //   } finally {
-  //     _textController.clear();
-  //     setState(() {
-  //       _loading = false;
-  //     });
-  //     _textFieldFocus.requestFocus();
-  //   }
-  // }
-
-  // Future<void> _sendImageMessage(String message) async {
-  //   try {
-  //     setState(() {
-  //       _loading = true;
-  //     });
-  //
-  //     chatController.list.add(
-  //         DataModel(imagePickerController.image.value!.path.toString(), 'image', message, isMe: true));
-  //     chatController.list.add(DataModel(imagePickerController.image.value!.path.toString(), 'text', message, isMe: true));
-  //     streamSocket.addResponse(chatController.list);
-  //
-  //     setState(() {
-  //       _scrollDown();
-  //     });
-  //
-  //     final firstImage = await imagePickerController.image.value!.readAsBytes();
-  //
-  //     final prompt = TextPart(message);
-  //
-  //     final imageParts = [
-  //       DataPart('image/jpeg', firstImage),
-  //     ];
-  //
-  //     final response = await _model.generateContent([
-  //       Content.multi([prompt, ...imageParts])
-  //     ]);
-  //
-  //     var text = response.text;
-  //
-  //     if (text == null) {
-  //       _showError('No response from API.');
-  //       return;
-  //     } else {
-  //       chatController.list.add(DataModel('', 'text', text, isMe: false));
-  //       streamSocket.addResponse(chatController.list);
-  //
-  //       setState(() {
-  //         _loading = false;
-  //         _scrollDown();
-  //       });
-  //     }
-  //   } catch (e) {
-  //     _showError(e.toString());
-  //     setState(() {
-  //       _loading = false;
-  //     });
-  //   } finally {
-  //     _textController.clear();
-  //     setState(() {
-  //       _loading = false;
-  //     });
-  //     _textFieldFocus.requestFocus();
-  //   }
-  // }
 
 
   void _showError(String message) {
