@@ -1,24 +1,28 @@
 
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class CustomTextFields extends StatelessWidget {
 
   final TextEditingController controller;
-  final FocusNode focusNode;
-  final VoidCallback click,cameraClick;
-  final bool isLoading;
-  final bool image ;
-  final File? imageFile ;
 
-  const CustomTextFields({super.key, required this.controller, required this.focusNode, required this.click, required this.cameraClick, required this.isLoading,
-   required this.image,  this.imageFile});
+  final VoidCallback click, cameraClick;
+  final bool isLoading;
+  final File? imageFile;
+
+  const CustomTextFields({
+    super.key,
+    required this.controller,
+    required this.click,
+    required this.cameraClick,
+    required this.isLoading,
+    this.imageFile,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(5.0),
       child: Center(
         child: Container(
           decoration: BoxDecoration(
@@ -30,29 +34,37 @@ class CustomTextFields extends StatelessWidget {
             ),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Visibility(
-                visible: imageFile==null?true:false,
+                visible:imageFile != null?true:false,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Image.file(
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.cover,
-                        imageFile!)
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: imageFile != null
+                                ? Image.file(imageFile!,
+                                    height: 100, width: 100, fit: BoxFit.cover)
+                                : Image.asset("assets/demo.jpg",
+                                    height: 100, width: 100)),
+                      ),
+                      const Divider(),
+                    ],
                   ),
                 ),
               ),
+
               Row(
                 children: [
-                   Expanded(
+                  Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.only(
+                          left: 12.0, right: 12.0),
                       child: TextField(
-                        focusNode: focusNode,
                         controller: controller,
                         decoration: const InputDecoration(
                           hintText: "Message",
@@ -68,7 +80,9 @@ class CustomTextFields extends StatelessWidget {
                         onPressed: cameraClick,
                       ),
                       IconButton(
-                        icon: isLoading?const CircularProgressIndicator():const Icon(Icons.send),
+                        icon: isLoading
+                            ? const CircularProgressIndicator()
+                            : const Icon(Icons.send),
                         onPressed: click,
                       ),
                     ],

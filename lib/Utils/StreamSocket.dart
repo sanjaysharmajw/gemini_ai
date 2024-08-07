@@ -1,6 +1,6 @@
 
 import 'dart:async';
-import 'package:gemini_ai/DataModel.dart';
+import 'package:gemini_ai/Models/DataModel.dart';
 
 class StreamSocket {
   final _socketResponse = StreamController<List<DataModel>>.broadcast();

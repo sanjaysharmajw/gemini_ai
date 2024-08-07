@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:gemini_ai/ColourConstant.dart';
-import 'package:gemini_ai/Utils.dart';
-import 'package:gemini_ai/font_path.dart';
+import 'package:gemini_ai/Utils/ColourConstant.dart';
+import 'package:gemini_ai/Utils/Utils.dart';
+import 'package:gemini_ai/Utils/font_path.dart';
 import 'package:typewritertext/typewritertext.dart';
 
 class ChatItems extends StatelessWidget {
