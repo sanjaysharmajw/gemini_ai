@@ -5,7 +5,6 @@ import 'package:gemini_ai/Utils/ColourConstant.dart';
 import 'package:gemini_ai/Utils/Utils.dart';
 import 'package:gemini_ai/Utils/font_path.dart';
 import 'package:stream_typewriter_text/stream_typewriter_text.dart';
-import 'package:typewritertext/typewritertext.dart';
 
 class ChatItems extends StatelessWidget {
   final String text, type, image;
@@ -46,42 +45,49 @@ class ChatItems extends StatelessWidget {
                 child: Padding(
                     padding: const EdgeInsets.all(13.0),
                     child: type == 'image'
-                        ? Image.file(
-                            height: 250,
-                            width: 250,
-                            fit: BoxFit.cover,
-                            File(image.toString()))
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Visibility(
+                                visible: image.isNotEmpty ? true : false,
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(13)),
+                                  child: Image.file(
+                                      height: 250,
+                                      width: 250,
+                                      fit: BoxFit.fitWidth,
+                                      File(image.toString())),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(text,
+                                  style: const TextStyle(
+                                      fontFamily: mediumFont, color: appWhite))
+                            ],
+                          )
                         : isFromUser
-                            ? Text(text,style: const TextStyle(
-                      fontFamily: mediumFont,color: appWhite
-                    ))
-                            :
-                    StreamTypewriterAnimatedText(
-                      text: text,
-                      style: const TextStyle(
-                        fontFamily: mediumFont,
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                      //isHapticFeedbackEnabled: true,
-                      speed: const Duration(milliseconds: 30),
-                      pause: const Duration(milliseconds: 100),
-                    )
-
-                    // TypeWriter.text(text,
-                    //             duration: const Duration(milliseconds: 10),
-                    //             style: TextStyle(
-                    //                 fontFamily: mediumFont,
-                    //                 color: isFromUser
-                    //                     ? Colors.white
-                    //                     : Colors.black,
-                    //                 fontSize: 15))
-
-                ),
+                            ? Text(text,
+                                style: const TextStyle(
+                                    fontFamily: mediumFont, color: appWhite))
+                            : StreamTypewriterAnimatedText(
+                                text: text,
+                                style: const TextStyle(
+                                  fontFamily: mediumFont,
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                                isHapticFeedbackEnabled: true,
+                                speed: const Duration(milliseconds: 30),
+                                pause: const Duration(milliseconds: 100),
+                              )),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0,top: 10,bottom: 10),
-                child: Text(Utils.getFormattedTimeEvent(DateTime.now().millisecondsSinceEpoch),style: const TextStyle(fontSize: 12,fontFamily: 'Gilroy')),
+                padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
+                child: Text(
+                    Utils.getFormattedTimeEvent(
+                        DateTime.now().millisecondsSinceEpoch),
+                    style: const TextStyle(fontSize: 12, fontFamily: 'Gilroy')),
               ),
             ],
           )

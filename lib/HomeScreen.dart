@@ -9,8 +9,6 @@ import 'package:gemini_ai/Utils/ColourConstant.dart';
 import 'package:gemini_ai/Widgets/CustomTextFields.dart';
 import 'package:gemini_ai/Models/DataModel.dart';
 import 'package:gemini_ai/Controller/ImagePickerController.dart';
-import 'package:gemini_ai/Widgets/MessageWidgets.dart';
-import 'package:gemini_ai/Utils/StreamSocket.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -51,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appWhite,
       appBar: AppBar(
         backgroundColor: appBlue,
         title: const Text('Gemini AI'),
@@ -78,16 +77,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   return Expanded(
                     child: ListView.builder(
-                        controller: chatController.scrollController,
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          final data = chatController.list[index];
-                          return ChatItems(
-                              text: data.prompt,
-                              isFromUser: data.isMe,
-                              type: data.type,
-                              image: data.image);
-                        }),
+                      controller: chatController.scrollController,
+                      itemCount: chatController.list.length,
+                      itemBuilder: (context, index) {
+                        final data = chatController.list[index];
+                        if (chatController.list.indexWhere((item) => item.prompt == data.prompt && item.isMe == data.isMe) != index) {
+                          return const SizedBox.shrink();
+                        }
+                        return ChatItems(
+                          text: data.prompt,
+                          isFromUser: data.isMe,
+                          type: data.type,
+                          image: data.image,
+                        );
+                      },
+                    )
                   );
                 }
               },
