@@ -27,10 +27,33 @@ class ImagePickerController extends GetxController {
           // WebUiSettings is not required here as it depends on the context
         ],
       );
-
       if (croppedFile != null) {
         image.value = File(croppedFile.path); // Update the reactive variable
       }
     }
   }
+
+  Future<void> pickImageGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+          ),
+          IOSUiSettings(
+            title: 'Cropper',
+          ),
+          // WebUiSettings is not required here as it depends on the context
+        ],
+      );
+      if (croppedFile != null) {
+        image.value = File(croppedFile.path); // Update the reactive variable
+      }
+    }
+  }
+
 }

@@ -14,7 +14,9 @@ class ChatController extends GetxController {
   StreamSocket streamSocket = StreamSocket();
   final textController = TextEditingController();
 
-  ScrollController scrollController = ScrollController();
+  var api="AIzaSyA-IIkkkaUUgwiY53TRCIGdTGwC9_N5vXk".obs;
+
+  final ScrollController scrollController = ScrollController();
 
   Future<void> sendChatMessage(String message) async {
     loading.value = true;
@@ -86,7 +88,7 @@ class ChatController extends GetxController {
     }
   }
 
-  // Scroll Chat
+  // // Scroll Chat
   Future<void> scrollAnimation() async {
     return await Future.delayed(
         const Duration(milliseconds: 100),
@@ -95,5 +97,6 @@ class ChatController extends GetxController {
             duration: const Duration(milliseconds: 300),
             curve: Curves.linear));
   }
+
 
 }

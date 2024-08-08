@@ -1,8 +1,4 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:gemini_ai/Controller/ChatController.dart';
 import 'package:gemini_ai/Widgets/ChatItems.dart';
 import 'package:gemini_ai/Utils/ColourConstant.dart';
@@ -12,9 +8,6 @@ import 'package:gemini_ai/Controller/ImagePickerController.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:image_picker/image_picker.dart';
-
-import 'package:image_cropper/image_cropper.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,23 +20,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final imagePickerController = Get.put(ImagePickerController());
   final chatController = Get.put(ChatController());
-  static const _apiKey = 'AIzaSyA-IIkkkaUUgwiY53TRCIGdTGwC9_N5vXk';
-
 
   @override
   void initState() {
     super.initState();
-    chatController.scrollAnimation();
     chatController.streamSocket.getResponse;
     chatController.model = GenerativeModel(
       model: 'gemini-1.5-flash',
-      apiKey: _apiKey,
+      apiKey: chatController.api.value,
       safetySettings: [
         SafetySetting(HarmCategory.harassment, HarmBlockThreshold.high),
         SafetySetting(HarmCategory.hateSpeech, HarmBlockThreshold.high),
       ],
     );
     chatController.chat = chatController.model.startChat();
+    chatController.scrollAnimation();
   }
 
   @override
@@ -52,10 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: appWhite,
       appBar: AppBar(
         backgroundColor: appBlue,
-        title: const Text('Gemini AI'),
+        title: const Text('Gemini AI',style: TextStyle(color: Colors.white)),
       ),
       body: Obx(() {
-        chatController.scrollAnimation();
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -76,9 +66,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 style: TextStyle(color: Colors.white))));
                   }
                   return Expanded(
-                    child: ListView.builder(
+                    child: ListView.separated(
+                      physics: const BouncingScrollPhysics(),
                       controller: chatController.scrollController,
                       itemCount: chatController.list.length,
+                      padding: const EdgeInsets.all(16),
                       itemBuilder: (context, index) {
                         final data = chatController.list[index];
                         if (chatController.list.indexWhere((item) => item.prompt == data.prompt && item.isMe == data.isMe) != index) {
@@ -91,6 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           image: data.image,
                         );
                       },
+                      separatorBuilder: (_, index) => const SizedBox(
+                        height: 5,
+                      ),
                     )
                   );
                 }
@@ -112,11 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               _showError('Please enter prompt');
                             } else {
                               if (imagePickerController.image.value == null) {
-                                chatController.sendChatMessage(
-                                    chatController.textController.text);
+                                chatController.sendChatMessage(chatController.textController.text);
+                                chatController.scrollAnimation();
                               } else {
-                                chatController.sendImageMessage(
-                                    chatController.textController.text);
+                                chatController.sendImageMessage(chatController.textController.text);
+                                chatController.scrollAnimation();
                               }
                             }
                           },

@@ -81,8 +81,10 @@ class CustomTextFields extends StatelessWidget {
                       ),
                       IconButton(
                         icon: isLoading
-                            ? const CircularProgressIndicator()
-                            : const Icon(Icons.send),
+                            ? Transform.scale(
+                          scale: 0.5,
+                          child: const CircularProgressIndicator(),
+                        ): const Icon(Icons.send),
                         onPressed: click,
                       ),
                     ],
