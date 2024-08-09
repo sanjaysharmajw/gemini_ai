@@ -14,7 +14,7 @@ class ChatController extends GetxController {
   StreamSocket streamSocket = StreamSocket();
   final textController = TextEditingController();
 
-  var api="AIzaSyA-IIkkkaUUgwiY53TRCIGdTGwC9_N5vXk".obs;
+  var api="Your API Key".obs;
 
   final ScrollController scrollController = ScrollController();
 
